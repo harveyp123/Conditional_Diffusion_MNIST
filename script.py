@@ -27,6 +27,7 @@ from torchvision.utils import save_image, make_grid
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation, PillowWriter
 import numpy as np
+import os
 
 class ResidualConvBlock(nn.Module):
     def __init__(
@@ -311,7 +312,11 @@ def train_mnist():
     n_feat = 128 # 128 ok, 256 better (but slower)
     lrate = 1e-4
     save_model = False
-    save_dir = './data/diffusion_outputs10/'
+    save_dir = './output/diffusion_outputs10/'
+    if not os.path.exists(save_dir):
+        
+        os.makedirs(save_dir)
+        print(f"Make directory {save_dir} successfully")
     ws_test = [0.0, 0.5, 2.0] # strength of generative guidance
 
     ddpm = DDPM(nn_model=ContextUnet(in_channels=1, n_feat=n_feat, n_classes=n_classes), betas=(1e-4, 0.02), n_T=n_T, device=device, drop_prob=0.1)
